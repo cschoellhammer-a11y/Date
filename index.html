@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Date ❤️</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- STARTSIDE -->
+  <section id="introScreen" class="screen active">
+    <div id="introContent" class="hidden">
+      <h1>Hej Flotte</h1>
+
+      <p class="subtitle">
+        Det lykkedes mig hehe 😉❤️
+      </p>
+
+      <button id="giftButton" class="gift-button">
+        <span class="gift">🎁</span>
+        <span class="gift-text">Klik her</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- DATE-SPØRGSMÅL -->
+  <section id="dateScreen" class="screen">
+    <h1>Skal vi tage på en date? ❤️</h1>
+
+    <div id="dateButtons" class="button-row hidden">
+      <button id="yesButton" class="main-button yes-button">
+        JA
+      </button>
+
+      <button id="noButton" class="main-button no-button">
+        Nej..
+      </button>
+    </div>
+  </section>
+
+  <!-- STICKMAN-FEST -->
+  <section id="celebrationScreen" class="screen">
+    <h1>YESSS! 🎉</h1>
+
+    <div class="stickman dancing">
+      <div class="head"></div>
+
+      <div class="body"></div>
+
+      <div class="arm left-arm"></div>
+      <div class="arm right-arm"></div>
+
+      <div class="leg left-leg"></div>
+      <div class="leg right-leg"></div>
+    </div>
+
+    <div id="speechBubble" class="speech-bubble hidden">
+      Jeg er så heldig ❤️
+    </div>
+  </section>
+
+  <!-- VALG AF DATE -->
+  <section id="activityScreen" class="screen scroll-screen">
+    <h1>Hvad kunne du godt tænke dig? 😍</h1>
+
+    <div class="options-grid">
+      <button class="option-button" data-choice="PadelBoard">
+        🏄‍♀️ PadelBoard
+      </button>
+
+      <button class="option-button" data-choice="Strandtur">
+        🔥 Engangsgrill, picnictaske og så på stranden
+      </button>
+
+      <button class="option-button" data-choice="Silkeborg">
+        🌲 Kærestetur til Silkeborg
+      </button>
+
+      <button class="option-button" data-choice="Spaophold">
+        🧖‍♀️ Spaophold
+      </button>
+
+      <button class="option-button" data-choice="Glamping">
+        ⛺ Glamping
+      </button>
+
+      <button class="option-button" data-choice="Galopbanen">
+        🐎 Galopbanen
+      </button>
+
+      <button class="option-button" data-choice="Film og snacks">
+        🍿 Hygge med snacks og film
+      </button>
+    </div>
+  </section>
+
+  <!-- VALG AF TIDSPUNKT -->
+  <section id="timeScreen" class="screen">
+    <h1>Vælg tidspunkt 📅</h1>
+
+    <p id="selectedActivity" class="selection-text"></p>
+
+    <div class="time-options">
+      <button class="option-button time-button" data-time="Uge 30">
+        📅 Uge 30
+      </button>
+
+      <button class="option-button time-button" data-time="Weekend i Juli">
+        ☀️ Weekend i Juli
+      </button>
+
+      <button class="option-button time-button" data-time="Weekend i August">
+        ☀️ Weekend i August
+      </button>
+    </div>
+  </section>
+
+  <!-- SLUTSIDE -->
+  <section id="finalScreen" class="screen">
+
+    <div class="couple">
+
+      <div class="person person-left">
+        <div class="person-head"></div>
+        <div class="person-body"></div>
+        <div class="person-leg left"></div>
+        <div class="person-leg right"></div>
+      </div>
+
+      <div class="kiss-heart">❤️</div>
+
+      <div class="person person-right">
+        <div class="person-head"></div>
+        <div class="hair"></div>
+        <div class="person-body"></div>
+        <div class="person-leg left"></div>
+        <div class="person-leg right"></div>
+      </div>
+
+    </div>
+
+    <h1>JEG GLÆDER MIG ❤️</h1>
+
+    <p id="finalChoice" class="selection-text"></p>
+
+  </section>
+
+  <!-- ERROR POPUP -->
+  <div id="errorPopup" class="popup">
+    <button id="closePopup" class="close-popup">×</button>
+
+    <div class="error-icon">❌</div>
+
+    <h2>Error</h2>
+
+    <p>Prøv JA 😏</p>
+  </div>
+
+  <!-- EFFEKTER -->
+  <div id="effectsContainer"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
