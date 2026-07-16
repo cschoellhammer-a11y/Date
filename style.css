@@ -588,3 +588,579 @@ h1 {
     transform: scale(0.8);
   }
 }
+
+/* ======================================================
+   SMOOTH SCREEN TRANSITIONS
+====================================================== */
+
+.screen {
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(80px) scale(0.98);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.8s;
+}
+
+.screen.active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  animation: none;
+}
+
+.screen.leaving {
+  visibility: visible;
+  opacity: 0;
+  transform: translateX(-80px) scale(0.98);
+}
+
+.scroll-screen.active {
+  overflow-y: auto;
+}
+
+
+/* ======================================================
+   FIRST STICK MAN – HANDS BEHIND HEAD + HIP MOVEMENT
+====================================================== */
+
+.hip-dancer {
+  position: relative;
+  width: 230px;
+  height: 330px;
+  margin-top: 15px;
+  animation:
+    hipCircle 1.45s linear infinite,
+    dancerBounce 0.72s ease-in-out infinite alternate;
+  transform-origin: 50% 58%;
+}
+
+.dancer-head {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 92px;
+  height: 92px;
+  border: 7px solid #171717;
+  border-radius: 50%;
+  background: #ffe76a;
+  transform: translateX(-50%);
+  z-index: 8;
+}
+
+.eye {
+  position: absolute;
+  top: 31px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #171717;
+}
+
+.eye-left {
+  left: 24px;
+}
+
+.eye-right {
+  right: 24px;
+}
+
+.smile {
+  position: absolute;
+  left: 50%;
+  bottom: 17px;
+  width: 38px;
+  height: 19px;
+  border-bottom: 5px solid #171717;
+  border-radius: 0 0 30px 30px;
+  transform: translateX(-50%);
+}
+
+.dancer-body {
+  position: absolute;
+  top: 98px;
+  left: 50%;
+  width: 8px;
+  height: 126px;
+  border-radius: 10px;
+  background: #171717;
+  transform: translateX(-50%);
+}
+
+.dancer-arm,
+.dancer-forearm,
+.dancer-leg {
+  position: absolute;
+  width: 8px;
+  border-radius: 10px;
+  background: #171717;
+  transform-origin: top center;
+}
+
+/* Upper arms travel upward toward the head */
+.dancer-arm {
+  top: 111px;
+  height: 82px;
+}
+
+.dancer-arm-left {
+  left: 105px;
+  transform: rotate(128deg);
+}
+
+.dancer-arm-right {
+  right: 105px;
+  transform: rotate(-128deg);
+}
+
+/* Forearms rest behind the head */
+.dancer-forearm {
+  top: 72px;
+  height: 68px;
+}
+
+.dancer-forearm-left {
+  left: 52px;
+  transform: rotate(56deg);
+}
+
+.dancer-forearm-right {
+  right: 52px;
+  transform: rotate(-56deg);
+}
+
+.dancer-leg {
+  top: 218px;
+  height: 112px;
+}
+
+.dancer-leg-left {
+  left: 111px;
+  transform: rotate(17deg);
+  animation: leftKnee 0.72s ease-in-out infinite alternate;
+}
+
+.dancer-leg-right {
+  right: 111px;
+  transform: rotate(-17deg);
+  animation: rightKnee 0.72s ease-in-out infinite alternate;
+}
+
+@keyframes hipCircle {
+  0% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+
+  25% {
+    transform: translate(10px, 5px) rotate(3deg);
+  }
+
+  50% {
+    transform: translate(0, 13px) rotate(-2deg);
+  }
+
+  75% {
+    transform: translate(-10px, 5px) rotate(3deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+}
+
+@keyframes dancerBounce {
+  from {
+    margin-top: 8px;
+  }
+
+  to {
+    margin-top: 22px;
+  }
+}
+
+@keyframes leftKnee {
+  from {
+    transform: rotate(17deg);
+  }
+
+  to {
+    transform: rotate(31deg);
+  }
+}
+
+@keyframes rightKnee {
+  from {
+    transform: rotate(-30deg);
+  }
+
+  to {
+    transform: rotate(-14deg);
+  }
+}
+
+
+/* ======================================================
+   FINAL COUPLE DANCE
+====================================================== */
+
+.dance-scene {
+  position: relative;
+  width: min(650px, 96vw);
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dance-couple {
+  position: relative;
+  width: 540px;
+  height: 350px;
+  transform-origin: center;
+  animation: coupleTurn 5.2s ease-in-out infinite;
+}
+
+.dance-person {
+  position: absolute;
+  top: 20px;
+  width: 170px;
+  height: 315px;
+  transform-origin: 50% 45%;
+}
+
+.dance-man {
+  left: 95px;
+  animation: manDance 1.15s ease-in-out infinite alternate;
+}
+
+.dance-woman {
+  right: 68px;
+  animation: womanSwing 2.3s ease-in-out infinite;
+}
+
+.dance-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 84px;
+  height: 84px;
+  border: 7px solid #171717;
+  border-radius: 50%;
+  background: #ffe76a;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.short-hair {
+  position: absolute;
+  top: -3px;
+  left: 48px;
+  width: 75px;
+  height: 32px;
+  border-radius: 55px 55px 14px 14px;
+  background: #302315;
+  z-index: 11;
+}
+
+.blonde-hair {
+  position: absolute;
+  top: -5px;
+  left: 36px;
+  width: 104px;
+  height: 132px;
+  border-radius: 54px 54px 44px 44px;
+  background: #f5c842;
+  z-index: 4;
+  transform: rotate(-4deg);
+  animation: hairFlow 1.15s ease-in-out infinite alternate;
+}
+
+.blonde-hair::before,
+.blonde-hair::after {
+  position: absolute;
+  bottom: -22px;
+  width: 32px;
+  height: 73px;
+  border-radius: 50%;
+  background: #f5c842;
+  content: "";
+}
+
+.blonde-hair::before {
+  left: 5px;
+  transform: rotate(15deg);
+}
+
+.blonde-hair::after {
+  right: 5px;
+  transform: rotate(-15deg);
+}
+
+.dance-body {
+  position: absolute;
+  top: 81px;
+  left: 50%;
+  width: 8px;
+  height: 125px;
+  border-radius: 10px;
+  background: #171717;
+  transform: translateX(-50%);
+}
+
+.woman-dress {
+  position: absolute;
+  top: 88px;
+  left: 50%;
+  width: 105px;
+  height: 130px;
+  background: #ff66a8;
+  clip-path: polygon(43% 0, 57% 0, 100% 100%, 0 100%);
+  transform: translateX(-50%);
+  z-index: 6;
+}
+
+.dance-arm,
+.dance-leg {
+  position: absolute;
+  width: 8px;
+  border-radius: 10px;
+  background: #171717;
+  transform-origin: top center;
+}
+
+.man-arm-right {
+  top: 102px;
+  right: 20px;
+  height: 128px;
+  transform: rotate(-74deg);
+}
+
+.man-arm-left {
+  top: 105px;
+  left: 71px;
+  height: 95px;
+  transform: rotate(20deg);
+}
+
+.woman-arm-left {
+  top: 101px;
+  left: 17px;
+  height: 128px;
+  transform: rotate(73deg);
+}
+
+.woman-arm-right {
+  top: 105px;
+  right: 71px;
+  height: 92px;
+  transform: rotate(-23deg);
+}
+
+.dance-leg {
+  top: 202px;
+  height: 110px;
+}
+
+.man-leg-left {
+  left: 79px;
+  transform: rotate(21deg);
+}
+
+.man-leg-right {
+  right: 79px;
+  transform: rotate(-25deg);
+}
+
+.woman-leg-left {
+  left: 77px;
+  transform: rotate(27deg);
+}
+
+.woman-leg-right {
+  right: 77px;
+  transform: rotate(-30deg);
+}
+
+.joined-hands {
+  position: absolute;
+  top: 125px;
+  left: 50%;
+  z-index: 30;
+  font-size: 35px;
+  transform: translateX(-50%);
+  animation: joinedHandsMove 1.15s ease-in-out infinite alternate;
+}
+
+.final-heading {
+  font-size: clamp(40px, 7vw, 78px);
+}
+
+@keyframes manDance {
+  from {
+    transform: translateY(0) rotate(-4deg);
+  }
+
+  to {
+    transform: translateY(-9px) rotate(5deg);
+  }
+}
+
+@keyframes womanSwing {
+  0% {
+    transform: translateX(0) rotate(-8deg) scale(1);
+  }
+
+  25% {
+    transform: translateX(32px) translateY(-16px) rotate(12deg) scale(1.03);
+  }
+
+  50% {
+    transform: translateX(58px) translateY(-7px) rotate(22deg) scale(0.96);
+  }
+
+  75% {
+    transform: translateX(28px) translateY(-17px) rotate(8deg) scale(1.03);
+  }
+
+  100% {
+    transform: translateX(0) rotate(-8deg) scale(1);
+  }
+}
+
+@keyframes coupleTurn {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-18px);
+  }
+}
+
+@keyframes joinedHandsMove {
+  from {
+    transform: translateX(-50%) translateY(0) rotate(-8deg);
+  }
+
+  to {
+    transform: translateX(-35%) translateY(-11px) rotate(8deg);
+  }
+}
+
+@keyframes hairFlow {
+  from {
+    transform: rotate(-4deg) translateX(0);
+  }
+
+  to {
+    transform: rotate(8deg) translateX(8px);
+  }
+}
+
+
+/* ======================================================
+   REALISTIC ROCKETS
+====================================================== */
+
+.rocket {
+  position: fixed;
+  z-index: 160;
+  width: 6px;
+  height: 20px;
+  border-radius: 50% 50% 35% 35%;
+  background: linear-gradient(
+    to top,
+    #ff7b00,
+    #fff4ac 65%,
+    #ffffff
+  );
+  box-shadow:
+    0 0 8px #fff,
+    0 0 16px #ff9d00,
+    0 0 28px #ff6200;
+  pointer-events: none;
+}
+
+.rocket::after {
+  position: absolute;
+  top: 17px;
+  left: 50%;
+  width: 4px;
+  height: 75px;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 245, 180, 1),
+    rgba(255, 120, 20, 0.72),
+    rgba(255, 80, 10, 0)
+  );
+  filter: blur(2px);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.smoke {
+  position: fixed;
+  z-index: 155;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(115, 115, 115, 0.55);
+  filter: blur(2px);
+  pointer-events: none;
+  animation: smokeFade 1.3s ease-out forwards;
+}
+
+.spark {
+  position: fixed;
+  z-index: 170;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+  pointer-events: none;
+}
+
+.heart-particle {
+  position: fixed;
+  z-index: 190;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff2b67;
+  box-shadow:
+    0 0 7px #ffffff,
+    0 0 15px #ff2b67,
+    0 0 25px #ff174f;
+  pointer-events: none;
+}
+
+@keyframes smokeFade {
+  from {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.2) translateY(24px);
+  }
+}
+
+@media (max-width: 700px) {
+  .hip-dancer {
+    transform: scale(0.78);
+    margin-top: -15px;
+  }
+
+  .dance-scene {
+    transform: scale(0.72);
+    margin-top: -55px;
+    margin-bottom: -55px;
+  }
+}
