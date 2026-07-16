@@ -73,6 +73,7 @@ const blackoutScreen =
 
 let selectedActivity = "";
 let horseClicks = 0;
+let horseIsMoving = false;
 let endingStarted = false;
 
 
@@ -92,7 +93,9 @@ const wait = (milliseconds) => {
 };
 
 
-/* SKÆRMSKIFT */
+/* ======================================
+   SKÆRMSKIFT
+====================================== */
 
 async function showScreen(screenId) {
 
@@ -132,7 +135,9 @@ async function showScreen(screenId) {
 }
 
 
-/* STARTSIDE */
+/* ======================================
+   STARTSIDE
+====================================== */
 
 async function startIntro() {
 
@@ -145,7 +150,9 @@ async function startIntro() {
 }
 
 
-/* GAVE */
+/* ======================================
+   GAVEN
+====================================== */
 
 async function openGift() {
 
@@ -191,7 +198,9 @@ async function openGift() {
 }
 
 
-/* NEJ-KNAP */
+/* ======================================
+   NEJ-KNAPPEN
+====================================== */
 
 function moveNoButton() {
 
@@ -233,7 +242,9 @@ function moveNoButton() {
 }
 
 
-/* POPUP */
+/* ======================================
+   ERROR-POPUP
+====================================== */
 
 function showErrorPopup() {
 
@@ -255,7 +266,9 @@ function showErrorPopup() {
 }
 
 
-/* JA */
+/* ======================================
+   JA
+====================================== */
 
 async function acceptDate() {
 
@@ -313,7 +326,9 @@ async function acceptDate() {
 }
 
 
-/* AKTIVITET */
+/* ======================================
+   AKTIVITETSVALG
+====================================== */
 
 function selectActivity(event) {
 
@@ -323,17 +338,7 @@ function selectActivity(event) {
   selectedActivityText.textContent =
     `Du har valgt: ${selectedActivity} ❤️`;
 
-  horseClicks = 0;
-
-  horseButton.style.left =
-    "50%";
-
-  horseButton.style.top =
-    "50%";
-
-  horseBubble.classList.add(
-    "hidden"
-  );
+  resetHorse();
 
   showScreen(
     "timeScreen"
@@ -342,9 +347,33 @@ function selectActivity(event) {
 }
 
 
-/* HEST */
+/* ======================================
+   HESTEN
+====================================== */
 
-function moveHorse() {
+function resetHorse() {
+
+  horseClicks = 0;
+  horseIsMoving = false;
+
+  horseButton.style.left =
+    "50%";
+
+  horseButton.style.top =
+    "50%";
+
+  horseButton.classList.remove(
+    "galloping"
+  );
+
+  horseBubble.classList.add(
+    "hidden"
+  );
+
+}
+
+
+function getNewHorsePosition() {
 
   const areaWidth =
     horseArea.clientWidth;
@@ -358,67 +387,82 @@ function moveHorse() {
   const horseHeight =
     horseButton.offsetHeight;
 
-  const horizontalPadding =
-    horseWidth / 2 + 20;
+  const paddingX =
+    horseWidth / 2 + 25;
 
-  const verticalPadding =
-    horseHeight / 2 + 35;
+  const paddingY =
+    horseHeight / 2 + 40;
 
   const minimumX =
-    horizontalPadding;
+    paddingX;
 
   const maximumX =
-    areaWidth -
-    horizontalPadding;
+    Math.max(
+      minimumX,
+      areaWidth - paddingX
+    );
 
   const minimumY =
-    verticalPadding;
+    paddingY;
 
   const maximumY =
-    areaHeight -
-    verticalPadding;
-
-  const newX =
-    minimumX +
-    Math.random() *
     Math.max(
-      1,
-      maximumX - minimumX
+      minimumY,
+      areaHeight - paddingY
     );
-
-  const newY =
-    minimumY +
-    Math.random() *
-    Math.max(
-      1,
-      maximumY - minimumY
-    );
-
-  horseButton.style.left =
-    `${newX}px`;
-
-  horseButton.style.top =
-    `${newY}px`;
-
-  horseButton.classList.remove(
-    "running"
-  );
-
-  void horseButton.offsetWidth;
-
-  horseButton.classList.add(
-    "running"
-  );
 
   return {
-    x: newX,
-    y: newY
+
+    x:
+      minimumX +
+      Math.random() *
+      Math.max(
+        1,
+        maximumX - minimumX
+      ),
+
+    y:
+      minimumY +
+      Math.random() *
+      Math.max(
+        1,
+        maximumY - minimumY
+      )
+
   };
 
 }
 
 
-function placeHorseBubble(
+async function gallopHorse() {
+
+  const newPosition =
+    getNewHorsePosition();
+
+  horseButton.classList.remove(
+    "galloping"
+  );
+
+  void horseButton.offsetWidth;
+
+  horseButton.classList.add(
+    "galloping"
+  );
+
+  horseButton.style.left =
+    `${newPosition.x}px`;
+
+  horseButton.style.top =
+    `${newPosition.y}px`;
+
+  await wait(730);
+
+  return newPosition;
+
+}
+
+
+function showHorseBubble(
   position,
   message
 ) {
@@ -441,44 +485,50 @@ function placeHorseBubble(
 
 async function handleHorseClick() {
 
+  if (horseIsMoving) {
+    return;
+  }
+
+  horseIsMoving = true;
   horseClicks += 1;
 
-  horseButton.disabled = true;
+  horseBubble.classList.add(
+    "hidden"
+  );
 
-  const newPosition =
-    moveHorse();
-
-  await wait(350);
+  const position =
+    await gallopHorse();
 
   if (horseClicks === 1) {
 
-    placeHorseBubble(
-      newPosition,
+    showHorseBubble(
+      position,
       "Prøv igen 😉"
     );
 
-    await wait(450);
+    await wait(500);
 
-    horseButton.disabled =
-      false;
+    horseIsMoving = false;
 
     return;
 
   }
 
-  placeHorseBubble(
-    newPosition,
-    "Hehe prøv igen"
+  showHorseBubble(
+    position,
+    "Hehe prøv igen 😏"
   );
 
-  await wait(1350);
+  await wait(1450);
 
   await showFinalScreen();
 
 }
 
 
-/* SLUTSIDE */
+/* ======================================
+   SLUTDANS
+====================================== */
 
 async function showFinalScreen() {
 
@@ -493,37 +543,51 @@ async function showFinalScreen() {
 
     {
       delay: 0,
-      x: 0.15,
-      y: 0.33,
+      x: 0.14,
+      y: 0.34,
       path: "curveRight"
     },
 
     {
-      delay: 400,
-      x: 0.85,
-      y: 0.30,
+      delay: 350,
+      x: 0.86,
+      y: 0.31,
       path: "curveLeft"
     },
 
     {
-      delay: 800,
+      delay: 720,
       x: 0.30,
       y: 0.18,
       path: "loop"
     },
 
     {
-      delay: 1200,
+      delay: 1080,
       x: 0.70,
       y: 0.18,
       path: "straight"
     },
 
     {
-      delay: 1800,
+      delay: 1500,
       x: 0.50,
-      y: 0.15,
+      y: 0.14,
       path: "loop"
+    },
+
+    {
+      delay: 2250,
+      x: 0.22,
+      y: 0.24,
+      path: "straight"
+    },
+
+    {
+      delay: 2600,
+      x: 0.78,
+      y: 0.24,
+      path: "curveRight"
     }
 
   ]);
@@ -541,14 +605,17 @@ async function showFinalScreen() {
 }
 
 
-/* TYPING */
+/* ======================================
+   TYPING-AFSLUTNING
+====================================== */
 
 async function typeMessage(
   message,
   speed = 85
 ) {
 
-  typingText.textContent = "";
+  typingText.textContent =
+    "";
 
   for (
     let index = 0;
@@ -643,7 +710,9 @@ async function startTypingEnding() {
 }
 
 
-/* EVENTS */
+/* ======================================
+   EVENT LISTENERS
+====================================== */
 
 giftButton.addEventListener(
   "click",
@@ -703,6 +772,24 @@ horseButton.addEventListener(
   handleHorseClick
 );
 
+horseButton.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+
+      event.preventDefault();
+
+      handleHorseClick();
+
+    }
+
+  }
+);
+
 window.addEventListener(
   "resize",
   () => {
@@ -723,7 +810,9 @@ window.addEventListener(
 startIntro();
 
 
-/* CANVAS-FYRVÆRKERI */
+/* ======================================
+   CANVAS-FYRVÆRKERI
+====================================== */
 
 class FireworkEngine {
 
