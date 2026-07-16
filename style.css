@@ -415,8 +415,24 @@ p {
 
 
 /* =========================================
-   SIDSTE BILLEDE
+   SLUTSIDE
 ========================================= */
+
+#finalScreen {
+  overflow: hidden;
+}
+
+#finalScreen .content {
+  position: relative;
+  z-index: 10;
+}
+
+#finalScreen h1,
+#finalScreen .selection-text,
+.final-image-wrap {
+  position: relative;
+  z-index: 20;
+}
 
 .final-image-wrap {
   width:
@@ -461,15 +477,15 @@ p {
 .heart-firework-gif {
   position: fixed;
 
-  top: 4%;
+  top: 2%;
   left: 50%;
 
-  z-index: 65;
+  z-index: 2;
 
   width:
     min(520px, 94vw);
 
-  max-height: 56vh;
+  max-height: 54vh;
 
   object-fit: contain;
 
@@ -484,12 +500,15 @@ p {
   mix-blend-mode: screen;
 
   filter:
-    saturate(1.25)
-    contrast(1.18)
+    brightness(1.45)
+    contrast(1.45)
+    saturate(1.5)
     drop-shadow(
-      0 0 30px
-      rgba(255, 30, 110, 0.8)
+      0 0 26px
+      rgba(255, 30, 110, 0.65)
     );
+
+  background: transparent;
 }
 
 .heart-firework-gif.visible {
@@ -701,7 +720,7 @@ p {
   }
 
   14% {
-    opacity: 1;
+    opacity: 0.82;
 
     transform:
       translateX(-50%)
@@ -709,7 +728,7 @@ p {
   }
 
   82% {
-    opacity: 1;
+    opacity: 0.82;
 
     transform:
       translateX(-50%)
@@ -762,6 +781,15 @@ p {
   .final-image-wrap {
     width:
       min(350px, 88vw);
+  }
+
+  .heart-firework-gif {
+    top: 8%;
+
+    width:
+      min(420px, 96vw);
+
+    max-height: 45vh;
   }
 
 }
