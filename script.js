@@ -45,25 +45,45 @@ const finalChoiceText =
     "finalChoice"
   );
 
-const heartFireworkGif =
+const typingText =
   document.getElementById(
-    "heartFireworkGif"
+    "typingText"
+  );
+
+const typingCursor =
+  document.getElementById(
+    "typingCursor"
+  );
+
+const blackoutScreen =
+  document.getElementById(
+    "blackoutScreen"
   );
 
 
 let selectedActivity = "";
 let selectedTime = "";
-let finalSequenceStarted = false;
+let endingStarted = false;
 
 
-const wait = (milliseconds) =>
-  new Promise((resolve) =>
-    setTimeout(resolve, milliseconds)
+const wait = (milliseconds) => {
+
+  return new Promise(
+    (resolve) => {
+
+      setTimeout(
+        resolve,
+        milliseconds
+      );
+
+    }
   );
+
+};
 
 
 /* ======================================
-   SKIFT MELLEM SIDER
+   SKÆRMSKIFT
 ====================================== */
 
 async function showScreen(screenId) {
@@ -212,7 +232,7 @@ function moveNoButton() {
 
 
 /* ======================================
-   ERROR POPUP
+   POPUP
 ====================================== */
 
 function showErrorPopup() {
@@ -221,19 +241,22 @@ function showErrorPopup() {
     "visible"
   );
 
-  setTimeout(() => {
+  setTimeout(
+    () => {
 
-    errorPopup.classList.remove(
-      "visible"
-    );
+      errorPopup.classList.remove(
+        "visible"
+      );
 
-  }, 1800);
+    },
+    1800
+  );
 
 }
 
 
 /* ======================================
-   JA-KNAP
+   JA
 ====================================== */
 
 async function acceptDate() {
@@ -277,7 +300,7 @@ async function acceptDate() {
 
   ]);
 
-  await wait(1550);
+  await wait(1500);
 
   speechBubble.classList.remove(
     "hidden"
@@ -293,7 +316,7 @@ async function acceptDate() {
 
 
 /* ======================================
-   VALG AF AKTIVITET
+   AKTIVITET
 ====================================== */
 
 function selectActivity(event) {
@@ -312,7 +335,7 @@ function selectActivity(event) {
 
 
 /* ======================================
-   VALG AF TIDSPUNKT
+   TIDSPUNKT
 ====================================== */
 
 async function selectTime(event) {
@@ -327,51 +350,158 @@ async function selectTime(event) {
     "finalScreen"
   );
 
-  if (!finalSequenceStarted) {
+  fireworks.launchShow([
 
-    finalSequenceStarted = true;
+    {
+      delay: 0,
+      x: 0.15,
+      y: 0.33,
+      path: "curveRight"
+    },
 
-    fireworks.launchShow([
+    {
+      delay: 400,
+      x: 0.85,
+      y: 0.30,
+      path: "curveLeft"
+    },
 
-      {
-        delay: 0,
-        x: 0.16,
-        y: 0.34,
-        path: "curveRight"
-      },
+    {
+      delay: 800,
+      x: 0.30,
+      y: 0.18,
+      path: "loop"
+    },
 
-      {
-        delay: 400,
-        x: 0.84,
-        y: 0.31,
-        path: "curveLeft"
-      },
+    {
+      delay: 1200,
+      x: 0.70,
+      y: 0.18,
+      path: "straight"
+    },
 
-      {
-        delay: 820,
-        x: 0.31,
-        y: 0.19,
-        path: "loop"
-      },
+    {
+      delay: 1800,
+      x: 0.50,
+      y: 0.15,
+      path: "loop"
+    }
 
-      {
-        delay: 1220,
-        x: 0.69,
-        y: 0.19,
-        path: "straight"
-      }
+  ]);
 
-    ]);
+  if (!endingStarted) {
 
-    setTimeout(() => {
+    endingStarted = true;
 
-      heartFireworkGif.classList.add(
-        "visible"
-      );
+    await wait(7000);
 
-    }, 2500);
+    await startTypingEnding();
 
   }
+
+}
+
+
+/* ======================================
+   TYPING-FUNKTIONER
+====================================== */
+
+async function typeMessage(
+  message,
+  speed = 85
+) {
+
+  typingText.textContent = "";
+
+  for (
+    let index = 0;
+    index < message.length;
+    index += 1
+  ) {
+
+    typingText.textContent +=
+      message[index];
+
+    await wait(
+      speed +
+      Math.random() * 45
+    );
+
+  }
+
+}
+
+
+async function deleteMessage(
+  speed = 45
+) {
+
+  while (
+    typingText.textContent.length > 0
+  ) {
+
+    typingText.textContent =
+      typingText.textContent.slice(
+        0,
+        -1
+      );
+
+    await wait(
+      speed +
+      Math.random() * 30
+    );
+
+  }
+
+}
+
+
+async function startTypingEnding() {
+
+  await showScreen(
+    "typingScreen"
+  );
+
+  await wait(900);
+
+
+  await typeMessage(
+    "Jeg elsker dig"
+  );
+
+  await wait(1800);
+
+  await deleteMessage();
+
+
+  await wait(500);
+
+
+  await typeMessage(
+    "Glæder mig til du kommer hjem"
+  );
+
+  await wait(1900);
+
+  await deleteMessage();
+
+
+  await wait(500);
+
+
+  await typeMessage(
+    "Måske der også er en lille gave..."
+  );
+
+  await wait(2800);
+
+
+  typingCursor.style.display =
+    "none";
+
+  blackoutScreen.classList.add(
+    "visible"
+  );
 
 }
 
@@ -472,12 +602,13 @@ class FireworkEngine {
 
   constructor(canvas) {
 
-    this.canvas = canvas;
+    this.canvas =
+      canvas;
 
     this.context =
       canvas.getContext("2d");
 
-    this.devicePixelRatio =
+    this.pixelRatio =
       Math.min(
         window.devicePixelRatio || 1,
         2
@@ -497,8 +628,7 @@ class FireworkEngine {
     );
 
     requestAnimationFrame(
-      (time) =>
-        this.animate(time)
+      (time) => this.animate(time)
     );
 
   }
@@ -514,11 +644,11 @@ class FireworkEngine {
 
     this.canvas.width =
       this.width *
-      this.devicePixelRatio;
+      this.pixelRatio;
 
     this.canvas.height =
       this.height *
-      this.devicePixelRatio;
+      this.pixelRatio;
 
     this.canvas.style.width =
       `${this.width}px`;
@@ -527,10 +657,10 @@ class FireworkEngine {
       `${this.height}px`;
 
     this.context.setTransform(
-      this.devicePixelRatio,
+      this.pixelRatio,
       0,
       0,
-      this.devicePixelRatio,
+      this.pixelRatio,
       0,
       0
     );
@@ -543,15 +673,18 @@ class FireworkEngine {
     items.forEach(
       (item) => {
 
-        setTimeout(() => {
+        setTimeout(
+          () => {
 
-          this.launch(
-            item.x * this.width,
-            item.y * this.height,
-            item.path
-          );
+            this.launch(
+              item.x * this.width,
+              item.y * this.height,
+              item.path
+            );
 
-        }, item.delay);
+          },
+          item.delay
+        );
 
       }
     );
@@ -573,15 +706,15 @@ class FireworkEngine {
         0.76
       );
 
-    const startY =
-      this.height + 30;
-
     this.rockets.push({
 
       startX,
-      startY,
+
+      startY:
+        this.height + 30,
 
       targetX,
+
       targetY,
 
       path,
@@ -606,7 +739,7 @@ class FireworkEngine {
   }
 
 
-  getRocketPosition(
+  rocketPosition(
     rocket,
     progress
   ) {
@@ -618,7 +751,7 @@ class FireworkEngine {
         3
       );
 
-    const baseX =
+    let x =
       rocket.startX +
       (
         rocket.targetX -
@@ -626,7 +759,7 @@ class FireworkEngine {
       ) *
       eased;
 
-    const baseY =
+    let y =
       rocket.startY +
       (
         rocket.targetY -
@@ -634,31 +767,12 @@ class FireworkEngine {
       ) *
       eased;
 
-    let offsetX = 0;
-    let offsetY = 0;
-
 
     if (
-      rocket.path ===
-      "curveLeft"
+      rocket.path === "curveLeft"
     ) {
 
-      offsetX =
-        -Math.sin(
-          Math.PI *
-          progress
-        ) *
-        130;
-
-    }
-
-
-    if (
-      rocket.path ===
-      "curveRight"
-    ) {
-
-      offsetX =
+      x -=
         Math.sin(
           Math.PI *
           progress
@@ -669,14 +783,27 @@ class FireworkEngine {
 
 
     if (
-      rocket.path ===
-      "loop"
+      rocket.path === "curveRight"
+    ) {
+
+      x +=
+        Math.sin(
+          Math.PI *
+          progress
+        ) *
+        130;
+
+    }
+
+
+    if (
+      rocket.path === "loop"
     ) {
 
       const fade =
         1 - progress;
 
-      offsetX =
+      x +=
         Math.sin(
           Math.PI *
           2 *
@@ -685,7 +812,7 @@ class FireworkEngine {
         110 *
         fade;
 
-      offsetY =
+      y +=
         Math.cos(
           Math.PI *
           2 *
@@ -698,15 +825,8 @@ class FireworkEngine {
 
 
     return {
-
-      x:
-        baseX +
-        offsetX,
-
-      y:
-        baseY +
-        offsetY
-
+      x,
+      y
     };
 
   }
@@ -719,10 +839,10 @@ class FireworkEngine {
   ) {
 
     const amount =
-      85 +
+      90 +
       Math.floor(
         Math.random() *
-        35
+        40
       );
 
     for (
@@ -737,12 +857,7 @@ class FireworkEngine {
           2 *
           index
         ) /
-        amount +
-        (
-          Math.random() -
-          0.5
-        ) *
-        0.05;
+        amount;
 
       const speed =
         85 +
@@ -762,19 +877,19 @@ class FireworkEngine {
           Math.sin(angle) *
           speed,
 
+        age: 0,
+
         life:
-          1.25 +
+          1.3 +
           Math.random() *
           0.9,
-
-        age: 0,
 
         drag: 0.982,
 
         gravity:
-          78 +
+          75 +
           Math.random() *
-          40,
+          45,
 
         hue:
           hue +
@@ -782,22 +897,12 @@ class FireworkEngine {
             Math.random() -
             0.5
           ) *
-          24,
-
-        brightness:
-          58 +
-          Math.random() *
-          28,
+          25,
 
         size:
           1.8 +
           Math.random() *
-          2.2,
-
-        twinkle:
-          Math.random() *
-          Math.PI *
-          2
+          2.5
 
       });
 
@@ -825,13 +930,7 @@ class FireworkEngine {
       this.context;
 
 
-    context.globalCompositeOperation =
-      "source-over";
-
-    context.fillStyle =
-      "rgba(0, 0, 0, 0.10)";
-
-    context.fillRect(
+    context.clearRect(
       0,
       0,
       this.width,
@@ -858,7 +957,7 @@ class FireworkEngine {
             );
 
           const position =
-            this.getRocketPosition(
+            this.rocketPosition(
               rocket,
               progress
             );
@@ -875,7 +974,7 @@ class FireworkEngine {
 
           if (
             rocket.trail.length >
-            22
+            20
           ) {
 
             rocket.trail.shift();
@@ -887,91 +986,33 @@ class FireworkEngine {
             (point, index) => {
 
               point.alpha *=
-                0.92;
+                0.91;
 
-              const radius =
-                1 +
+              const size =
+                2 +
                 (
                   index /
                   rocket.trail.length
                 ) *
-                2.2;
-
-
-              const glow =
-                context.createRadialGradient(
-
-                  point.x,
-                  point.y,
-                  0,
-
-                  point.x,
-                  point.y,
-                  radius * 5
-
-                );
-
-
-              glow.addColorStop(
-
-                0,
-
-                `hsla(
-                  ${rocket.hue},
-                  100%,
-                  85%,
-                  ${point.alpha}
-                )`
-
-              );
-
-
-              glow.addColorStop(
-
-                0.35,
-
-                `hsla(
-                  ${rocket.hue},
-                  100%,
-                  58%,
-                  ${
-                    point.alpha *
-                    0.75
-                  }
-                )`
-
-              );
-
-
-              glow.addColorStop(
-
-                1,
-
-                `hsla(
-                  ${rocket.hue},
-                  100%,
-                  45%,
-                  0
-                )`
-
-              );
+                3;
 
 
               context.fillStyle =
-                glow;
+                `hsla(
+                  ${rocket.hue},
+                  100%,
+                  65%,
+                  ${point.alpha}
+                )`;
 
               context.beginPath();
 
               context.arc(
-
                 point.x,
                 point.y,
-
-                radius * 5,
-
+                size,
                 0,
                 Math.PI * 2
-
               );
 
               context.fill();
@@ -986,15 +1027,11 @@ class FireworkEngine {
           context.beginPath();
 
           context.arc(
-
             position.x,
             position.y,
-
-            2.2,
-
+            3,
             0,
             Math.PI * 2
-
           );
 
           context.fill();
@@ -1005,16 +1042,15 @@ class FireworkEngine {
           ) {
 
             this.burst(
-
               position.x,
               position.y,
               rocket.hue
-
             );
 
             return false;
 
           }
+
 
           return true;
 
@@ -1043,144 +1079,44 @@ class FireworkEngine {
           particle.velocityX *=
             particle.drag;
 
-
           particle.velocityY =
-
             particle.velocityY *
             particle.drag +
-
             particle.gravity *
             deltaTime;
 
 
           particle.x +=
-
             particle.velocityX *
             deltaTime;
 
-
           particle.y +=
-
             particle.velocityY *
             deltaTime;
 
 
-          const remaining =
-
+          const opacity =
             1 -
-
             particle.age /
             particle.life;
 
 
-          const flicker =
-
-            0.72 +
-
-            Math.sin(
-
-              time *
-              0.018 +
-
-              particle.twinkle
-
-            ) *
-
-            0.28;
-
-
-          const alpha =
-
-            remaining *
-            flicker;
-
-
-          const glow =
-
-            context.createRadialGradient(
-
-              particle.x,
-              particle.y,
-              0,
-
-              particle.x,
-              particle.y,
-
-              particle.size *
-              5
-
-            );
-
-
-          glow.addColorStop(
-
-            0,
-
-            `hsla(
-              ${particle.hue},
-              100%,
-              ${
-                particle.brightness +
-                18
-              }%,
-              ${alpha}
-            )`
-
-          );
-
-
-          glow.addColorStop(
-
-            0.35,
-
-            `hsla(
-              ${particle.hue},
-              100%,
-              ${
-                particle.brightness
-              }%,
-              ${
-                alpha *
-                0.8
-              }
-            )`
-
-          );
-
-
-          glow.addColorStop(
-
-            1,
-
-            `hsla(
-              ${particle.hue},
-              100%,
-              ${
-                particle.brightness
-              }%,
-              0
-            )`
-
-          );
-
-
           context.fillStyle =
-            glow;
+            `hsla(
+              ${particle.hue},
+              100%,
+              65%,
+              ${opacity}
+            )`;
 
           context.beginPath();
 
           context.arc(
-
             particle.x,
             particle.y,
-
-            particle.size *
-            5,
-
+            particle.size,
             0,
-            Math.PI *
-            2
-
+            Math.PI * 2
           );
 
           context.fill();
