@@ -18,14 +18,10 @@
 
 <body>
 
-  <!-- Canvas-fyrværkeri -->
   <canvas id="fireworksCanvas"></canvas>
 
 
-  <!-- =====================================
-       STARTSIDE
-  ====================================== -->
-
+  <!-- STARTSIDE -->
   <section
     id="introScreen"
     class="screen active"
@@ -36,7 +32,7 @@
       class="content hidden"
     >
 
-      <h1>Hej Smukke</h1>
+      <h1>Hej Flotte</h1>
 
       <p class="subtitle">
         Det lykkedes mig hehe 😉❤️
@@ -48,9 +44,7 @@
         aria-label="Åbn gaven"
       >
 
-        <span class="gift">
-          🎁
-        </span>
+        <span class="gift">🎁</span>
 
         <span class="gift-label">
           Klik her
@@ -63,10 +57,7 @@
   </section>
 
 
-  <!-- =====================================
-       DATE-SPØRGSMÅL
-  ====================================== -->
-
+  <!-- DATE-SPØRGSMÅL -->
   <section
     id="dateScreen"
     class="screen"
@@ -104,10 +95,7 @@
   </section>
 
 
-  <!-- =====================================
-       JA-FEST
-  ====================================== -->
-
+  <!-- JA-FEST -->
   <section
     id="celebrationScreen"
     class="screen"
@@ -139,10 +127,7 @@
   </section>
 
 
-  <!-- =====================================
-       VALG AF DATE
-  ====================================== -->
-
+  <!-- VALG AF DATE -->
   <section
     id="activityScreen"
     class="screen scroll-screen"
@@ -212,74 +197,57 @@
   </section>
 
 
-  <!-- =====================================
-       VALG AF TIDSPUNKT
-  ====================================== -->
-
+  <!-- GODKENDELSE MED HEST -->
   <section
     id="timeScreen"
-    class="screen"
+    class="screen horse-screen"
   >
 
-    <div class="content wide">
+    <div class="content horse-content">
 
-      <h1>
-        Vælg tidspunkt 📅
+      <h1 class="horse-heading">
+        Vi gør det i weekenden i uge 30
       </h1>
+
+      <p class="horse-instruction">
+        Tryk på hesten, hvis du godkender ❤️
+      </p>
+
+      <div
+        id="horseArea"
+        class="horse-area"
+      >
+
+        <button
+          id="horseButton"
+          class="horse-button"
+          aria-label="Godkend med hesten"
+        >
+          🐴
+        </button>
+
+        <div
+          id="horseBubble"
+          class="horse-bubble hidden"
+        ></div>
+
+      </div>
 
       <p
         id="selectedActivity"
-        class="selection-text"
+        class="selection-text activity-reminder"
       ></p>
-
-      <div class="time-options">
-
-        <button
-          class="option-button time-button"
-          data-time="Uge 30"
-        >
-          📅 Uge 30
-        </button>
-
-        <button
-          class="option-button time-button"
-          data-time="Weekend i Juli"
-        >
-          ☀️ Weekend i Juli
-        </button>
-
-        <button
-          class="option-button time-button"
-          data-time="Weekend i August"
-        >
-          ☀️ Weekend i August
-        </button>
-
-      </div>
 
     </div>
 
   </section>
 
 
-  <!-- =====================================
-       SLUTDANS
-  ====================================== -->
-
+  <!-- SLUTDANS -->
   <section
     id="finalScreen"
     class="screen"
   >
-
-    <div class="final-fireworks-background">
-
-      <img
-        src="https://gifdb.com/images/thumbnail/sparkling-heart-fireworks-i5hg1mixbcuv6a49.gif"
-        alt=""
-        class="final-fireworks-gif"
-      >
-
-    </div>
 
     <div class="content final-content">
 
@@ -317,10 +285,7 @@
   </section>
 
 
-  <!-- =====================================
-       TYPING-SIDE
-  ====================================== -->
-
+  <!-- TYPING-SIDE -->
   <section
     id="typingScreen"
     class="screen typing-screen"
@@ -345,17 +310,11 @@
   </section>
 
 
-  <!-- =====================================
-       SORT SLUTSKÆRM
-  ====================================== -->
-
+  <!-- SORT SLUTSKÆRM -->
   <div id="blackoutScreen"></div>
 
 
-  <!-- =====================================
-       ERROR POPUP
-  ====================================== -->
-
+  <!-- ERROR POPUP -->
   <div
     id="errorPopup"
     class="popup"
