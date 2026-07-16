@@ -2,21 +2,39 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Date ❤️</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
 
 <body>
 
+  <!-- Canvas-fyrværkeri -->
   <canvas id="fireworksCanvas"></canvas>
 
-  <!-- STARTSIDE -->
-  <section id="introScreen" class="screen active">
 
-    <div id="introContent" class="content hidden">
+  <!-- =====================================
+       STARTSIDE
+  ====================================== -->
+
+  <section
+    id="introScreen"
+    class="screen active"
+  >
+
+    <div
+      id="introContent"
+      class="content hidden"
+    >
 
       <h1>Hej Flotte</h1>
 
@@ -27,13 +45,17 @@
       <button
         id="giftButton"
         class="gift-button"
-        aria-label="Åbn gave"
+        aria-label="Åbn gaven"
       >
-        <span class="gift">🎁</span>
+
+        <span class="gift">
+          🎁
+        </span>
 
         <span class="gift-label">
           Klik her
         </span>
+
       </button>
 
     </div>
@@ -41,8 +63,14 @@
   </section>
 
 
-  <!-- DATE-SPØRGSMÅL -->
-  <section id="dateScreen" class="screen">
+  <!-- =====================================
+       DATE-SPØRGSMÅL
+  ====================================== -->
+
+  <section
+    id="dateScreen"
+    class="screen"
+  >
 
     <div class="content">
 
@@ -76,19 +104,25 @@
   </section>
 
 
-  <!-- FØRSTE DANS -->
-  <section id="celebrationScreen" class="screen">
+  <!-- =====================================
+       JA-FEST
+  ====================================== -->
+
+  <section
+    id="celebrationScreen"
+    class="screen"
+  >
 
     <div class="content celebration-content">
 
       <h1>YESSS! 🎉</h1>
 
-      <div class="dance-frame">
+      <div class="celebration-gif-container">
 
         <img
-          src="https://media1.tenor.com/m/xyYlK5vlj80AAAAC/stickman-dance.gif"
-          alt="Dansende Stick Man"
-          class="dance-gif"
+          src="https://i.gifer.com/VZvx.gif"
+          alt="Glad fejring"
+          class="celebration-gif"
         >
 
       </div>
@@ -105,7 +139,10 @@
   </section>
 
 
-  <!-- VALG AF AKTIVITET -->
+  <!-- =====================================
+       VALG AF DATE
+  ====================================== -->
+
   <section
     id="activityScreen"
     class="screen scroll-screen"
@@ -175,12 +212,20 @@
   </section>
 
 
-  <!-- VALG AF TIDSPUNKT -->
-  <section id="timeScreen" class="screen">
+  <!-- =====================================
+       VALG AF TIDSPUNKT
+  ====================================== -->
+
+  <section
+    id="timeScreen"
+    class="screen"
+  >
 
     <div class="content wide">
 
-      <h1>Vælg tidspunkt 📅</h1>
+      <h1>
+        Vælg tidspunkt 📅
+      </h1>
 
       <p
         id="selectedActivity"
@@ -217,22 +262,48 @@
   </section>
 
 
-  <!-- SLUTSIDE -->
-  <section id="finalScreen" class="screen">
+  <!-- =====================================
+       SLUTDANS
+  ====================================== -->
+
+  <section
+    id="finalScreen"
+    class="screen"
+  >
+
+    <div class="final-fireworks-background">
+
+      <img
+        src="https://gifdb.com/images/thumbnail/sparkling-heart-fireworks-i5hg1mixbcuv6a49.gif"
+        alt=""
+        class="final-fireworks-gif"
+      >
+
+    </div>
 
     <div class="content final-content">
 
-      <div class="final-image-wrap">
+      <div class="final-celebration-small">
 
         <img
-          src="https://tse2.mm.bing.net/th/id/OIP.MQHl-yxDRSWWs5XrSxbycAHaH_?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
-          alt="Stickman og stickdame danser"
-          class="final-dance-image"
+          src="https://i.gifer.com/VZvx.gif"
+          alt="Glad fejring"
+          class="final-celebration-gif"
         >
 
       </div>
 
-      <h1>
+      <div class="couple-dance-container">
+
+        <img
+          src="https://cdnl.iconscout.com/lottie/premium/thumb/a-couple-is-dancing-animation-download-in-lottie-json-gif-static-svg-file-formats--together-celebration-of-love-romantic-dance-harmonious-graceful-movements-dating-pack-relationship-animations-10201288.gif"
+          alt="Dansende par"
+          class="couple-dance-gif"
+        >
+
+      </div>
+
+      <h1 class="final-heading">
         JEG GLÆDER MIG ❤️
       </h1>
 
@@ -241,19 +312,50 @@
         class="selection-text"
       ></p>
 
-      <img
-        id="heartFireworkGif"
-        src="https://gifdb.com/images/thumbnail/sparkling-heart-fireworks-i5hg1mixbcuv6a49.gif"
-        alt="Hjertefyrværkeri"
-        class="heart-firework-gif"
+    </div>
+
+  </section>
+
+
+  <!-- =====================================
+       TYPING-SIDE
+  ====================================== -->
+
+  <section
+    id="typingScreen"
+    class="screen typing-screen"
+  >
+
+    <div class="typing-container">
+
+      <div
+        id="typingText"
+        class="typing-text"
+      ></div>
+
+      <span
+        id="typingCursor"
+        class="typing-cursor"
       >
+        |
+      </span>
 
     </div>
 
   </section>
 
 
-  <!-- ERROR POPUP -->
+  <!-- =====================================
+       SORT SLUTSKÆRM
+  ====================================== -->
+
+  <div id="blackoutScreen"></div>
+
+
+  <!-- =====================================
+       ERROR POPUP
+  ====================================== -->
+
   <div
     id="errorPopup"
     class="popup"
