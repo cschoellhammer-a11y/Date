@@ -3,12 +3,12 @@
 }
 
 :root {
-  --yellow: #ffd900;
-  --light-yellow: #fff176;
+  --yellow: #ffd400;
+  --yellow-light: #fff47f;
   --dark: #171717;
-  --green: #62d84e;
-  --pink: #ff65ae;
   --white: #ffffff;
+  --green: #60d957;
+  --pink: #ff69ad;
 }
 
 html,
@@ -16,564 +16,725 @@ body {
   margin: 0;
   width: 100%;
   min-height: 100%;
+  overflow: hidden;
 }
 
 body {
   font-family: "Trebuchet MS", Arial, sans-serif;
   color: var(--dark);
   background: var(--yellow);
-  overflow: hidden;
 }
 
 button {
-  font-family: inherit;
+  font: inherit;
 }
+
+
+/* =========================================
+   FYRVÆRKERI CANVAS
+========================================= */
+
+#fireworksCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+
+/* =========================================
+   SKÆRME OG OVERGANGE
+========================================= */
 
 .screen {
   position: fixed;
   inset: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  text-align: center;
+  z-index: 1;
+
+  display: grid;
+  place-items: center;
+
+  padding: 28px;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform:
+    translateX(7vw)
+    scale(0.98);
+
+  filter: blur(10px);
+
+  transition:
+    opacity 800ms ease,
+    transform 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 850ms ease,
+    visibility 0s linear 950ms;
+
   background:
     radial-gradient(
+      circle at 50% 30%,
+      rgba(255, 255, 255, 0.65),
+      transparent 30%
+    ),
+    radial-gradient(
       circle at center,
-      var(--light-yellow) 0%,
-      var(--yellow) 70%
+      var(--yellow-light),
+      var(--yellow) 72%
     );
-  overflow: hidden;
 }
 
 .screen.active {
-  display: flex;
-  animation: screenEntrance 0.8s ease;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform:
+    translateX(0)
+    scale(1);
+
+  filter: blur(0);
+
+  transition-delay: 0s;
+}
+
+.screen.leaving {
+  opacity: 0;
+
+  transform:
+    translateX(-7vw)
+    scale(0.98);
+
+  filter: blur(10px);
 }
 
 .scroll-screen {
   overflow-y: auto;
-  justify-content: flex-start;
-  padding-top: 60px;
-  padding-bottom: 60px;
+}
+
+
+/* =========================================
+   GENERELT INDHOLD
+========================================= */
+
+.content {
+  width: min(900px, 100%);
+  text-align: center;
+}
+
+.content.wide {
+  width: min(1050px, 100%);
 }
 
 h1 {
-  margin: 0 0 20px;
-  font-size: clamp(42px, 8vw, 88px);
-  line-height: 1.05;
+  margin: 0 0 18px;
+
+  font-size:
+    clamp(42px, 7.7vw, 88px);
+
+  line-height: 1.03;
 }
 
-.subtitle {
-  margin: 0;
-  font-size: clamp(20px, 3vw, 32px);
-  font-weight: 700;
+p {
+  font-size:
+    clamp(19px, 2.5vw, 30px);
+
+  font-weight: 800;
 }
 
 .hidden {
   display: none !important;
 }
 
+
+/* =========================================
+   STARTSIDE
+========================================= */
+
 #introContent {
-  animation: introEntrance 1.2s ease;
+  animation:
+    softEntrance
+    900ms
+    cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .gift-button {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-top: 45px;
-  padding: 0;
+  gap: 12px;
+
+  margin-top: 40px;
+
   border: 0;
   background: transparent;
+
   cursor: pointer;
 }
 
 .gift {
-  display: block;
-  font-size: clamp(110px, 18vw, 180px);
-  animation: giftBounce 1.1s ease-in-out infinite;
-  filter: drop-shadow(0 12px 4px rgba(0, 0, 0, 0.18));
+  font-size:
+    clamp(115px, 18vw, 180px);
+
+  filter:
+    drop-shadow(
+      0 16px 8px
+      rgba(0, 0, 0, 0.20)
+    );
+
+  animation:
+    giftFloat
+    1.6s
+    ease-in-out
+    infinite;
 }
 
-.gift-text {
+.gift-label {
   padding: 12px 24px;
-  border: 3px solid var(--dark);
-  border-radius: 14px;
-  background: var(--white);
-  color: var(--dark);
+
+  border:
+    3px solid
+    var(--dark);
+
+  border-radius: 15px;
+
+  background:
+    var(--white);
+
+  box-shadow:
+    0 7px 0
+    var(--dark);
+
   font-size: 22px;
   font-weight: 900;
-  box-shadow: 0 6px 0 var(--dark);
 }
 
-.gift-button:hover .gift {
-  transform: scale(1.08);
-}
 
-.button-row {
+/* =========================================
+   KNAPPER
+========================================= */
+
+.button-row,
+.time-options {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  gap: 45px;
-  margin-top: 40px;
+
+  gap: 30px;
+
+  margin-top: 35px;
 }
 
 .main-button,
 .option-button {
-  border: 4px solid var(--dark);
+  border:
+    4px solid
+    var(--dark);
+
   border-radius: 18px;
-  color: var(--dark);
+
+  color:
+    var(--dark);
+
+  box-shadow:
+    0 8px 0
+    var(--dark);
+
   font-weight: 900;
+
   cursor: pointer;
-  box-shadow: 0 8px 0 var(--dark);
+
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease,
-    background 0.15s ease;
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease;
 }
 
 .main-button {
   min-width: 170px;
-  padding: 20px 36px;
+
+  padding:
+    20px 38px;
+
   font-size: 32px;
 }
 
 .main-button:hover,
 .option-button:hover {
-  transform: translateY(-4px);
+  transform:
+    translateY(-4px)
+    scale(1.02);
+
+  filter:
+    brightness(1.03);
 }
 
 .main-button:active,
 .option-button:active {
-  transform: translateY(7px);
-  box-shadow: 0 1px 0 var(--dark);
+  transform:
+    translateY(7px);
+
+  box-shadow:
+    0 1px 0
+    var(--dark);
 }
 
 .yes-button {
-  background: var(--green);
+  background:
+    var(--green);
 }
 
 .no-button {
   position: relative;
-  background: var(--pink);
-  z-index: 30;
+  z-index: 80;
+
+  background:
+    var(--pink);
 }
 
-.stickman {
-  position: relative;
-  width: 150px;
-  height: 250px;
-  margin-top: 20px;
+
+/* =========================================
+   VALGMULIGHEDER
+========================================= */
+
+.options-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+
+  margin-top: 28px;
 }
 
-.head {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 82px;
-  height: 82px;
-  border: 8px solid var(--dark);
-  border-radius: 50%;
-  transform: translateX(-50%);
-  background: transparent;
+.option-button {
+  min-height: 88px;
+
+  padding:
+    18px 22px;
+
+  background:
+    #fff7b8;
+
+  font-size: 20px;
 }
 
-.head::before,
-.head::after {
-  position: absolute;
-  top: 25px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--dark);
-  content: "";
+.time-button {
+  width:
+    min(270px, 100%);
 }
 
-.head::before {
-  left: 20px;
+.selection-text {
+  margin-top: 12px;
 }
 
-.head::after {
-  right: 20px;
+
+/* =========================================
+   FØRSTE DANS
+========================================= */
+
+.celebration-content,
+.final-content {
+  display: grid;
+  place-items: center;
 }
 
-.body {
-  position: absolute;
-  top: 78px;
-  left: 50%;
-  width: 8px;
-  height: 92px;
-  background: var(--dark);
-  transform: translateX(-50%);
+.dance-frame {
+  width:
+    min(430px, 88vw);
+
+  max-height: 390px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  margin-top: 4px;
 }
 
-.arm,
-.leg {
-  position: absolute;
-  width: 8px;
-  background: var(--dark);
-  transform-origin: top center;
-}
+.dance-gif {
+  display: block;
 
-.arm {
-  top: 95px;
-  height: 85px;
-}
+  width: 100%;
 
-.left-arm {
-  left: 72px;
-  transform: rotate(55deg);
-}
+  max-height: 380px;
 
-.right-arm {
-  right: 72px;
-  transform: rotate(-55deg);
-}
+  object-fit: contain;
 
-.leg {
-  top: 165px;
-  height: 92px;
-}
+  mix-blend-mode: multiply;
 
-.left-leg {
-  left: 74px;
-  transform: rotate(28deg);
-}
+  filter:
+    contrast(1.08)
+    saturate(1.05)
+    drop-shadow(
+      0 18px 20px
+      rgba(0, 0, 0, 0.18)
+    );
 
-.right-leg {
-  right: 74px;
-  transform: rotate(-28deg);
-}
-
-.dancing {
-  animation: dancing 0.5s ease-in-out infinite alternate;
+  animation:
+    imageEntrance
+    1s
+    cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .speech-bubble {
   position: relative;
-  margin-top: 20px;
-  padding: 20px 30px;
-  border: 4px solid var(--dark);
-  border-radius: 30px;
-  background: var(--white);
-  font-size: 26px;
+
+  margin-top: 8px;
+
+  padding:
+    18px 28px;
+
+  border:
+    4px solid
+    var(--dark);
+
+  border-radius: 28px;
+
+  background:
+    var(--white);
+
+  font-size: 25px;
   font-weight: 900;
-  animation: bubbleEntrance 0.5s ease;
+
+  animation:
+    softEntrance
+    500ms
+    cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.speech-bubble::before {
-  position: absolute;
-  top: -22px;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  border-top: 4px solid var(--dark);
-  border-left: 4px solid var(--dark);
-  background: var(--white);
-  content: "";
-  transform: translateX(-50%) rotate(45deg);
-}
 
-.options-grid {
+/* =========================================
+   SIDSTE BILLEDE
+========================================= */
+
+.final-image-wrap {
+  width:
+    min(440px, 86vw);
+
+  max-height: 430px;
+
   display: grid;
-  width: min(950px, 100%);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 25px;
+  place-items: center;
+
+  overflow: hidden;
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 20px 45px
+    rgba(0, 0, 0, 0.18);
+
+  animation:
+    finalDance
+    3.8s
+    ease-in-out
+    infinite;
 }
 
-.option-button {
-  min-height: 85px;
-  padding: 18px;
-  background: #fff8bf;
-  font-size: 21px;
+.final-dance-image {
+  display: block;
+
+  width: 100%;
+  max-height: 430px;
+
+  object-fit: contain;
+
+  mix-blend-mode: multiply;
 }
 
-.time-options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 30px;
+
+/* =========================================
+   HJERTE-FYRVÆRKERI
+========================================= */
+
+.heart-firework-gif {
+  position: fixed;
+
+  top: 4%;
+  left: 50%;
+
+  z-index: 65;
+
+  width:
+    min(520px, 94vw);
+
+  max-height: 56vh;
+
+  object-fit: contain;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform:
+    translateX(-50%)
+    scale(0.35);
+
+  mix-blend-mode: screen;
+
+  filter:
+    saturate(1.25)
+    contrast(1.18)
+    drop-shadow(
+      0 0 30px
+      rgba(255, 30, 110, 0.8)
+    );
 }
 
-.time-button {
-  width: 230px;
+.heart-firework-gif.visible {
+  animation:
+    heartShow
+    5.2s
+    ease
+    forwards;
 }
 
-.selection-text {
-  margin: 10px 0 0;
-  font-size: clamp(18px, 3vw, 28px);
-  font-weight: 800;
-}
+
+/* =========================================
+   POPUP
+========================================= */
 
 .popup {
   position: fixed;
+
   top: 50%;
   left: 50%;
-  z-index: 200;
+
+  z-index: 120;
+
   display: none;
-  min-width: min(380px, 88vw);
-  padding: 35px;
-  border: 5px solid var(--dark);
+
+  min-width:
+    min(390px, 88vw);
+
+  padding: 34px;
+
+  border:
+    5px solid
+    var(--dark);
+
   border-radius: 22px;
-  background: var(--white);
+
+  background:
+    var(--white);
+
   text-align: center;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
-  transform: translate(-50%, -50%);
+
+  box-shadow:
+    0 24px 70px
+    rgba(0, 0, 0, 0.3);
+
+  transform:
+    translate(-50%, -50%);
 }
 
 .popup.visible {
   display: block;
-  animation: popupEntrance 0.35s ease;
+
+  animation:
+    popupEntrance
+    360ms
+    cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .popup h2 {
-  margin: 10px 0;
+  margin: 8px 0;
+
   font-size: 40px;
 }
 
 .popup p {
   margin: 0;
-  font-size: 27px;
-  font-weight: 900;
+}
+
+.close-popup {
+  position: absolute;
+
+  top: 8px;
+  right: 14px;
+
+  border: 0;
+
+  background: transparent;
+
+  font-size: 32px;
+
+  cursor: pointer;
 }
 
 .error-icon {
   font-size: 55px;
 }
 
-.close-popup {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  border: 0;
-  background: transparent;
-  font-size: 30px;
-  cursor: pointer;
-}
 
-.couple {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  width: 330px;
-  height: 270px;
-  margin-bottom: 20px;
-}
+/* =========================================
+   ANIMATIONER
+========================================= */
 
-.person {
-  position: relative;
-  width: 120px;
-  height: 260px;
-}
+@keyframes softEntrance {
 
-.person-left {
-  transform: rotate(7deg) translateX(15px);
-}
-
-.person-right {
-  transform: rotate(-7deg) translateX(-15px);
-}
-
-.person-head {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 76px;
-  height: 76px;
-  border: 7px solid var(--dark);
-  border-radius: 50%;
-  transform: translateX(-50%);
-}
-
-.person-body {
-  position: absolute;
-  top: 72px;
-  left: 50%;
-  width: 7px;
-  height: 105px;
-  background: var(--dark);
-  transform: translateX(-50%);
-}
-
-.person-leg {
-  position: absolute;
-  top: 170px;
-  width: 7px;
-  height: 90px;
-  background: var(--dark);
-  transform-origin: top center;
-}
-
-.person-leg.left {
-  left: 57px;
-  transform: rotate(19deg);
-}
-
-.person-leg.right {
-  right: 57px;
-  transform: rotate(-19deg);
-}
-
-.hair {
-  position: absolute;
-  top: 8px;
-  left: 70px;
-  width: 55px;
-  height: 105px;
-  border-radius: 50%;
-  background: var(--dark);
-  transform: rotate(-10deg);
-  z-index: -1;
-}
-
-.kiss-heart {
-  z-index: 5;
-  margin-top: 28px;
-  font-size: 48px;
-  animation: heartBeat 0.8s ease-in-out infinite alternate;
-}
-
-.confetti {
-  position: fixed;
-  top: -25px;
-  z-index: 150;
-  width: 12px;
-  height: 20px;
-  animation: confettiFall linear forwards;
-}
-
-.firework-particle {
-  position: fixed;
-  z-index: 140;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: fireworkExplosion 1.1s ease-out forwards;
-}
-
-@keyframes introEntrance {
   from {
     opacity: 0;
-    transform: scale(0.8);
+
+    transform:
+      translateY(18px)
+      scale(0.93);
   }
 
   to {
     opacity: 1;
-    transform: scale(1);
+
+    transform:
+      translateY(0)
+      scale(1);
   }
+
 }
 
-@keyframes giftBounce {
+@keyframes imageEntrance {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(35px)
+      scale(0.78);
+
+    filter:
+      blur(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter:
+      blur(0)
+      contrast(1.08)
+      saturate(1.05)
+      drop-shadow(
+        0 18px 20px
+        rgba(0, 0, 0, 0.18)
+      );
+  }
+
+}
+
+@keyframes giftFloat {
+
   0%,
   100% {
-    transform: translateY(0) rotate(-2deg);
+    transform:
+      translateY(0)
+      rotate(-2deg);
   }
 
   50% {
-    transform: translateY(-18px) rotate(2deg);
-  }
-}
-
-@keyframes screenEntrance {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
+    transform:
+      translateY(-18px)
+      rotate(2deg);
   }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes dancing {
-  from {
-    transform: translateY(0) rotate(-10deg);
-  }
-
-  to {
-    transform: translateY(-25px) rotate(10deg);
-  }
-}
-
-@keyframes bubbleEntrance {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 @keyframes popupEntrance {
+
   from {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6);
-  }
 
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes confettiFall {
-  to {
-    transform: translateY(115vh) rotate(900deg);
-    opacity: 0;
-  }
-}
-
-@keyframes fireworkExplosion {
-  from {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-
-  to {
     transform:
-      translate(
-        var(--move-x),
-        var(--move-y)
-      )
-      scale(0);
-    opacity: 0;
-  }
-}
-
-@keyframes heartBeat {
-  from {
-    transform: scale(0.9);
+      translate(-50%, -50%)
+      scale(0.72);
   }
 
   to {
-    transform: scale(1.15);
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1);
   }
+
 }
 
-@media (max-width: 700px) {
+@keyframes finalDance {
+
+  0%,
+  100% {
+    transform:
+      translateX(-8px)
+      rotate(-2deg)
+      scale(0.99);
+  }
+
+  50% {
+    transform:
+      translateX(8px)
+      rotate(2deg)
+      scale(1.02);
+  }
+
+}
+
+@keyframes heartShow {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      scale(0.35);
+  }
+
+  14% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      scale(1);
+  }
+
+  82% {
+    opacity: 1;
+
+    transform:
+      translateX(-50%)
+      scale(1.02);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      scale(1.18);
+  }
+
+}
+
+
+/* =========================================
+   MOBIL
+========================================= */
+
+@media (max-width: 720px) {
+
   .screen {
     padding: 20px;
-  }
-
-  .button-row {
-    gap: 18px;
-  }
-
-  .main-button {
-    min-width: 130px;
-    padding: 17px 22px;
-    font-size: 26px;
   }
 
   .options-grid {
@@ -584,583 +745,23 @@ h1 {
     font-size: 18px;
   }
 
-  .couple {
-    transform: scale(0.8);
-  }
-}
+  .main-button {
+    min-width: 132px;
 
-/* ======================================================
-   SMOOTH SCREEN TRANSITIONS
-====================================================== */
+    padding:
+      17px 24px;
 
-.screen {
-  display: flex;
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(80px) scale(0.98);
-  transition:
-    opacity 0.8s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.8s;
-}
-
-.screen.active {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(0) scale(1);
-  animation: none;
-}
-
-.screen.leaving {
-  visibility: visible;
-  opacity: 0;
-  transform: translateX(-80px) scale(0.98);
-}
-
-.scroll-screen.active {
-  overflow-y: auto;
-}
-
-
-/* ======================================================
-   FIRST STICK MAN – HANDS BEHIND HEAD + HIP MOVEMENT
-====================================================== */
-
-.hip-dancer {
-  position: relative;
-  width: 230px;
-  height: 330px;
-  margin-top: 15px;
-  animation:
-    hipCircle 1.45s linear infinite,
-    dancerBounce 0.72s ease-in-out infinite alternate;
-  transform-origin: 50% 58%;
-}
-
-.dancer-head {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  width: 92px;
-  height: 92px;
-  border: 7px solid #171717;
-  border-radius: 50%;
-  background: #ffe76a;
-  transform: translateX(-50%);
-  z-index: 8;
-}
-
-.eye {
-  position: absolute;
-  top: 31px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #171717;
-}
-
-.eye-left {
-  left: 24px;
-}
-
-.eye-right {
-  right: 24px;
-}
-
-.smile {
-  position: absolute;
-  left: 50%;
-  bottom: 17px;
-  width: 38px;
-  height: 19px;
-  border-bottom: 5px solid #171717;
-  border-radius: 0 0 30px 30px;
-  transform: translateX(-50%);
-}
-
-.dancer-body {
-  position: absolute;
-  top: 98px;
-  left: 50%;
-  width: 8px;
-  height: 126px;
-  border-radius: 10px;
-  background: #171717;
-  transform: translateX(-50%);
-}
-
-.dancer-arm,
-.dancer-forearm,
-.dancer-leg {
-  position: absolute;
-  width: 8px;
-  border-radius: 10px;
-  background: #171717;
-  transform-origin: top center;
-}
-
-/* Upper arms travel upward toward the head */
-.dancer-arm {
-  top: 111px;
-  height: 82px;
-}
-
-.dancer-arm-left {
-  left: 105px;
-  transform: rotate(128deg);
-}
-
-.dancer-arm-right {
-  right: 105px;
-  transform: rotate(-128deg);
-}
-
-/* Forearms rest behind the head */
-.dancer-forearm {
-  top: 72px;
-  height: 68px;
-}
-
-.dancer-forearm-left {
-  left: 52px;
-  transform: rotate(56deg);
-}
-
-.dancer-forearm-right {
-  right: 52px;
-  transform: rotate(-56deg);
-}
-
-.dancer-leg {
-  top: 218px;
-  height: 112px;
-}
-
-.dancer-leg-left {
-  left: 111px;
-  transform: rotate(17deg);
-  animation: leftKnee 0.72s ease-in-out infinite alternate;
-}
-
-.dancer-leg-right {
-  right: 111px;
-  transform: rotate(-17deg);
-  animation: rightKnee 0.72s ease-in-out infinite alternate;
-}
-
-@keyframes hipCircle {
-  0% {
-    transform: translate(0, 0) rotate(-2deg);
+    font-size: 26px;
   }
 
-  25% {
-    transform: translate(10px, 5px) rotate(3deg);
+  .dance-frame {
+    width:
+      min(350px, 88vw);
   }
 
-  50% {
-    transform: translate(0, 13px) rotate(-2deg);
+  .final-image-wrap {
+    width:
+      min(350px, 88vw);
   }
 
-  75% {
-    transform: translate(-10px, 5px) rotate(3deg);
-  }
-
-  100% {
-    transform: translate(0, 0) rotate(-2deg);
-  }
-}
-
-@keyframes dancerBounce {
-  from {
-    margin-top: 8px;
-  }
-
-  to {
-    margin-top: 22px;
-  }
-}
-
-@keyframes leftKnee {
-  from {
-    transform: rotate(17deg);
-  }
-
-  to {
-    transform: rotate(31deg);
-  }
-}
-
-@keyframes rightKnee {
-  from {
-    transform: rotate(-30deg);
-  }
-
-  to {
-    transform: rotate(-14deg);
-  }
-}
-
-
-/* ======================================================
-   FINAL COUPLE DANCE
-====================================================== */
-
-.dance-scene {
-  position: relative;
-  width: min(650px, 96vw);
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.dance-couple {
-  position: relative;
-  width: 540px;
-  height: 350px;
-  transform-origin: center;
-  animation: coupleTurn 5.2s ease-in-out infinite;
-}
-
-.dance-person {
-  position: absolute;
-  top: 20px;
-  width: 170px;
-  height: 315px;
-  transform-origin: 50% 45%;
-}
-
-.dance-man {
-  left: 95px;
-  animation: manDance 1.15s ease-in-out infinite alternate;
-}
-
-.dance-woman {
-  right: 68px;
-  animation: womanSwing 2.3s ease-in-out infinite;
-}
-
-.dance-head {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 84px;
-  height: 84px;
-  border: 7px solid #171717;
-  border-radius: 50%;
-  background: #ffe76a;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.short-hair {
-  position: absolute;
-  top: -3px;
-  left: 48px;
-  width: 75px;
-  height: 32px;
-  border-radius: 55px 55px 14px 14px;
-  background: #302315;
-  z-index: 11;
-}
-
-.blonde-hair {
-  position: absolute;
-  top: -5px;
-  left: 36px;
-  width: 104px;
-  height: 132px;
-  border-radius: 54px 54px 44px 44px;
-  background: #f5c842;
-  z-index: 4;
-  transform: rotate(-4deg);
-  animation: hairFlow 1.15s ease-in-out infinite alternate;
-}
-
-.blonde-hair::before,
-.blonde-hair::after {
-  position: absolute;
-  bottom: -22px;
-  width: 32px;
-  height: 73px;
-  border-radius: 50%;
-  background: #f5c842;
-  content: "";
-}
-
-.blonde-hair::before {
-  left: 5px;
-  transform: rotate(15deg);
-}
-
-.blonde-hair::after {
-  right: 5px;
-  transform: rotate(-15deg);
-}
-
-.dance-body {
-  position: absolute;
-  top: 81px;
-  left: 50%;
-  width: 8px;
-  height: 125px;
-  border-radius: 10px;
-  background: #171717;
-  transform: translateX(-50%);
-}
-
-.woman-dress {
-  position: absolute;
-  top: 88px;
-  left: 50%;
-  width: 105px;
-  height: 130px;
-  background: #ff66a8;
-  clip-path: polygon(43% 0, 57% 0, 100% 100%, 0 100%);
-  transform: translateX(-50%);
-  z-index: 6;
-}
-
-.dance-arm,
-.dance-leg {
-  position: absolute;
-  width: 8px;
-  border-radius: 10px;
-  background: #171717;
-  transform-origin: top center;
-}
-
-.man-arm-right {
-  top: 102px;
-  right: 20px;
-  height: 128px;
-  transform: rotate(-74deg);
-}
-
-.man-arm-left {
-  top: 105px;
-  left: 71px;
-  height: 95px;
-  transform: rotate(20deg);
-}
-
-.woman-arm-left {
-  top: 101px;
-  left: 17px;
-  height: 128px;
-  transform: rotate(73deg);
-}
-
-.woman-arm-right {
-  top: 105px;
-  right: 71px;
-  height: 92px;
-  transform: rotate(-23deg);
-}
-
-.dance-leg {
-  top: 202px;
-  height: 110px;
-}
-
-.man-leg-left {
-  left: 79px;
-  transform: rotate(21deg);
-}
-
-.man-leg-right {
-  right: 79px;
-  transform: rotate(-25deg);
-}
-
-.woman-leg-left {
-  left: 77px;
-  transform: rotate(27deg);
-}
-
-.woman-leg-right {
-  right: 77px;
-  transform: rotate(-30deg);
-}
-
-.joined-hands {
-  position: absolute;
-  top: 125px;
-  left: 50%;
-  z-index: 30;
-  font-size: 35px;
-  transform: translateX(-50%);
-  animation: joinedHandsMove 1.15s ease-in-out infinite alternate;
-}
-
-.final-heading {
-  font-size: clamp(40px, 7vw, 78px);
-}
-
-@keyframes manDance {
-  from {
-    transform: translateY(0) rotate(-4deg);
-  }
-
-  to {
-    transform: translateY(-9px) rotate(5deg);
-  }
-}
-
-@keyframes womanSwing {
-  0% {
-    transform: translateX(0) rotate(-8deg) scale(1);
-  }
-
-  25% {
-    transform: translateX(32px) translateY(-16px) rotate(12deg) scale(1.03);
-  }
-
-  50% {
-    transform: translateX(58px) translateY(-7px) rotate(22deg) scale(0.96);
-  }
-
-  75% {
-    transform: translateX(28px) translateY(-17px) rotate(8deg) scale(1.03);
-  }
-
-  100% {
-    transform: translateX(0) rotate(-8deg) scale(1);
-  }
-}
-
-@keyframes coupleTurn {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  50% {
-    transform: translateX(-18px);
-  }
-}
-
-@keyframes joinedHandsMove {
-  from {
-    transform: translateX(-50%) translateY(0) rotate(-8deg);
-  }
-
-  to {
-    transform: translateX(-35%) translateY(-11px) rotate(8deg);
-  }
-}
-
-@keyframes hairFlow {
-  from {
-    transform: rotate(-4deg) translateX(0);
-  }
-
-  to {
-    transform: rotate(8deg) translateX(8px);
-  }
-}
-
-
-/* ======================================================
-   REALISTIC ROCKETS
-====================================================== */
-
-.rocket {
-  position: fixed;
-  z-index: 160;
-  width: 6px;
-  height: 20px;
-  border-radius: 50% 50% 35% 35%;
-  background: linear-gradient(
-    to top,
-    #ff7b00,
-    #fff4ac 65%,
-    #ffffff
-  );
-  box-shadow:
-    0 0 8px #fff,
-    0 0 16px #ff9d00,
-    0 0 28px #ff6200;
-  pointer-events: none;
-}
-
-.rocket::after {
-  position: absolute;
-  top: 17px;
-  left: 50%;
-  width: 4px;
-  height: 75px;
-  border-radius: 50%;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 245, 180, 1),
-    rgba(255, 120, 20, 0.72),
-    rgba(255, 80, 10, 0)
-  );
-  filter: blur(2px);
-  content: "";
-  transform: translateX(-50%);
-}
-
-.smoke {
-  position: fixed;
-  z-index: 155;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: rgba(115, 115, 115, 0.55);
-  filter: blur(2px);
-  pointer-events: none;
-  animation: smokeFade 1.3s ease-out forwards;
-}
-
-.spark {
-  position: fixed;
-  z-index: 170;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
-  pointer-events: none;
-}
-
-.heart-particle {
-  position: fixed;
-  z-index: 190;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ff2b67;
-  box-shadow:
-    0 0 7px #ffffff,
-    0 0 15px #ff2b67,
-    0 0 25px #ff174f;
-  pointer-events: none;
-}
-
-@keyframes smokeFade {
-  from {
-    opacity: 0.7;
-    transform: scale(0.6);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(2.2) translateY(24px);
-  }
-}
-
-@media (max-width: 700px) {
-  .hip-dancer {
-    transform: scale(0.78);
-    margin-top: -15px;
-  }
-
-  .dance-scene {
-    transform: scale(0.72);
-    margin-top: -55px;
-    margin-bottom: -55px;
-  }
 }
