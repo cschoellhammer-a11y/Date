@@ -31,13 +31,13 @@ button {
 
 
 /* =========================================
-   FYRVÆRKERI CANVAS
+   CANVAS-FYRVÆRKERI
 ========================================= */
 
 #fireworksCanvas {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 60;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -45,7 +45,7 @@ button {
 
 
 /* =========================================
-   SKÆRME OG OVERGANGE
+   SKÆRME
 ========================================= */
 
 .screen {
@@ -117,10 +117,13 @@ button {
 
 
 /* =========================================
-   GENERELT INDHOLD
+   GENERELT
 ========================================= */
 
 .content {
+  position: relative;
+  z-index: 10;
+
   width: min(900px, 100%);
   text-align: center;
 }
@@ -165,6 +168,7 @@ p {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+
   gap: 12px;
 
   margin-top: 40px;
@@ -182,7 +186,7 @@ p {
   filter:
     drop-shadow(
       0 16px 8px
-      rgba(0, 0, 0, 0.20)
+      rgba(0, 0, 0, 0.2)
     );
 
   animation:
@@ -283,16 +287,14 @@ p {
 }
 
 .yes-button {
-  background:
-    var(--green);
+  background: var(--green);
 }
 
 .no-button {
   position: relative;
-  z-index: 80;
+  z-index: 90;
 
-  background:
-    var(--pink);
+  background: var(--pink);
 }
 
 
@@ -337,60 +339,48 @@ p {
 
 
 /* =========================================
-   FØRSTE DANS
+   JA-FEJRING
 ========================================= */
 
-.celebration-content,
-.final-content {
+.celebration-content {
   display: grid;
   place-items: center;
 }
 
-.dance-frame {
+.celebration-gif-container {
   width:
-    min(430px, 88vw);
+    min(480px, 90vw);
 
-  max-height: 390px;
+  max-height: 410px;
 
   display: grid;
   place-items: center;
 
   overflow: hidden;
 
-  border-radius: 28px;
+  border-radius: 30px;
 
   margin-top: 4px;
 }
 
-.dance-gif {
+.celebration-gif {
   display: block;
 
   width: 100%;
-
-  max-height: 380px;
+  max-height: 400px;
 
   object-fit: contain;
 
-  mix-blend-mode: multiply;
-
-  filter:
-    contrast(1.08)
-    saturate(1.05)
-    drop-shadow(
-      0 18px 20px
-      rgba(0, 0, 0, 0.18)
-    );
-
   animation:
     imageEntrance
-    1s
+    1000ms
     cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .speech-bubble {
   position: relative;
 
-  margin-top: 8px;
+  margin-top: 10px;
 
   padding:
     18px 28px;
@@ -422,101 +412,210 @@ p {
   overflow: hidden;
 }
 
-#finalScreen .content {
-  position: relative;
-  z-index: 10;
+.final-content {
+  display: grid;
+  place-items: center;
 }
 
-#finalScreen h1,
-#finalScreen .selection-text,
-.final-image-wrap {
-  position: relative;
-  z-index: 20;
-}
-
-.final-image-wrap {
-  width:
-    min(440px, 86vw);
-
-  max-height: 430px;
+.final-fireworks-background {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
 
   display: grid;
   place-items: center;
 
   overflow: hidden;
 
-  border-radius: 26px;
-
-  box-shadow:
-    0 20px 45px
-    rgba(0, 0, 0, 0.18);
-
-  animation:
-    finalDance
-    3.8s
-    ease-in-out
-    infinite;
-}
-
-.final-dance-image {
-  display: block;
-
-  width: 100%;
-  max-height: 430px;
-
-  object-fit: contain;
-
-  mix-blend-mode: multiply;
-}
-
-
-/* =========================================
-   HJERTE-FYRVÆRKERI
-========================================= */
-
-.heart-firework-gif {
-  position: fixed;
-
-  top: 2%;
-  left: 50%;
-
-  z-index: 2;
-
-  width:
-    min(520px, 94vw);
-
-  max-height: 54vh;
-
-  object-fit: contain;
-
-  opacity: 0;
-
   pointer-events: none;
+}
 
-  transform:
-    translateX(-50%)
-    scale(0.35);
+.final-fireworks-gif {
+  width:
+    min(820px, 120vw);
+
+  height:
+    min(820px, 110vh);
+
+  object-fit: contain;
+
+  opacity: 0.65;
 
   mix-blend-mode: screen;
 
   filter:
-    brightness(1.45)
-    contrast(1.45)
-    saturate(1.5)
-    drop-shadow(
-      0 0 26px
-      rgba(255, 30, 110, 0.65)
-    );
+    brightness(1.4)
+    contrast(1.35)
+    saturate(1.5);
 
-  background: transparent;
+  animation:
+    fireworksBackgroundPulse
+    4s
+    ease-in-out
+    infinite alternate;
 }
 
-.heart-firework-gif.visible {
+.final-celebration-small {
+  position: absolute;
+
+  top: 5%;
+  right: 4%;
+
+  z-index: 15;
+
+  width:
+    min(160px, 28vw);
+
+  opacity: 0.9;
+}
+
+.final-celebration-gif {
+  display: block;
+  width: 100%;
+
+  object-fit: contain;
+
+  border-radius: 18px;
+
   animation:
-    heartShow
-    5.2s
-    ease
-    forwards;
+    floatingCelebration
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.couple-dance-container {
+  position: relative;
+  z-index: 10;
+
+  width:
+    min(520px, 90vw);
+
+  max-height: 460px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  animation:
+    coupleFloat
+    3.5s
+    ease-in-out
+    infinite;
+}
+
+.couple-dance-gif {
+  display: block;
+
+  width: 100%;
+  max-height: 450px;
+
+  object-fit: contain;
+}
+
+.final-heading {
+  position: relative;
+  z-index: 12;
+
+  margin-top: 10px;
+}
+
+#finalChoice {
+  position: relative;
+  z-index: 12;
+}
+
+
+/* =========================================
+   TYPING-SIDE
+========================================= */
+
+.typing-screen {
+  z-index: 70;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #fff47f,
+      #ffd400 75%
+    );
+}
+
+.typing-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width:
+    min(1000px, 94vw);
+
+  min-height: 180px;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+.typing-text {
+  font-size:
+    clamp(34px, 6vw, 72px);
+
+  line-height: 1.2;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.typing-cursor {
+  display: inline-block;
+
+  margin-left: 5px;
+
+  font-size:
+    clamp(36px, 6vw, 74px);
+
+  font-weight: 400;
+
+  animation:
+    cursorBlink
+    700ms
+    steps(1)
+    infinite;
+}
+
+
+/* =========================================
+   SORT SLUTSKÆRM
+========================================= */
+
+#blackoutScreen {
+  position: fixed;
+  inset: 0;
+
+  z-index: 500;
+
+  opacity: 0;
+  visibility: hidden;
+
+  background: #000000;
+
+  pointer-events: none;
+
+  transition:
+    opacity 5s ease,
+    visibility 0s linear 5s;
+}
+
+#blackoutScreen.visible {
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity 5s ease;
 }
 
 
@@ -530,7 +629,7 @@ p {
   top: 50%;
   left: 50%;
 
-  z-index: 120;
+  z-index: 200;
 
   display: none;
 
@@ -569,7 +668,6 @@ p {
 
 .popup h2 {
   margin: 8px 0;
-
   font-size: 40px;
 }
 
@@ -584,7 +682,6 @@ p {
   right: 14px;
 
   border: 0;
-
   background: transparent;
 
   font-size: 32px;
@@ -602,7 +699,6 @@ p {
 ========================================= */
 
 @keyframes softEntrance {
-
   from {
     opacity: 0;
 
@@ -618,11 +714,9 @@ p {
       translateY(0)
       scale(1);
   }
-
 }
 
 @keyframes imageEntrance {
-
   from {
     opacity: 0;
 
@@ -642,19 +736,11 @@ p {
       scale(1);
 
     filter:
-      blur(0)
-      contrast(1.08)
-      saturate(1.05)
-      drop-shadow(
-        0 18px 20px
-        rgba(0, 0, 0, 0.18)
-      );
+      blur(0);
   }
-
 }
 
 @keyframes giftFloat {
-
   0%,
   100% {
     transform:
@@ -667,11 +753,9 @@ p {
       translateY(-18px)
       rotate(2deg);
   }
-
 }
 
 @keyframes popupEntrance {
-
   from {
     opacity: 0;
 
@@ -687,62 +771,64 @@ p {
       translate(-50%, -50%)
       scale(1);
   }
-
 }
 
-@keyframes finalDance {
+@keyframes fireworksBackgroundPulse {
+  from {
+    transform:
+      scale(0.95);
 
+    opacity: 0.5;
+  }
+
+  to {
+    transform:
+      scale(1.08);
+
+    opacity: 0.75;
+  }
+}
+
+@keyframes floatingCelebration {
   0%,
   100% {
     transform:
-      translateX(-8px)
-      rotate(-2deg)
-      scale(0.99);
+      translateY(0)
+      rotate(-2deg);
   }
 
   50% {
     transform:
-      translateX(8px)
-      rotate(2deg)
-      scale(1.02);
+      translateY(-12px)
+      rotate(2deg);
   }
-
 }
 
-@keyframes heartShow {
-
-  0% {
-    opacity: 0;
-
+@keyframes coupleFloat {
+  0%,
+  100% {
     transform:
-      translateX(-50%)
-      scale(0.35);
-  }
-
-  14% {
-    opacity: 0.82;
-
-    transform:
-      translateX(-50%)
+      translateY(0)
       scale(1);
   }
 
-  82% {
-    opacity: 0.82;
-
+  50% {
     transform:
-      translateX(-50%)
-      scale(1.02);
+      translateY(-10px)
+      scale(1.025);
+  }
+}
+
+@keyframes cursorBlink {
+  0%,
+  49% {
+    opacity: 1;
   }
 
+  50%,
   100% {
     opacity: 0;
-
-    transform:
-      translateX(-50%)
-      scale(1.18);
   }
-
 }
 
 
@@ -773,23 +859,27 @@ p {
     font-size: 26px;
   }
 
-  .dance-frame {
+  .celebration-gif-container {
     width:
-      min(350px, 88vw);
+      min(360px, 90vw);
   }
 
-  .final-image-wrap {
+  .couple-dance-container {
     width:
-      min(350px, 88vw);
+      min(370px, 92vw);
   }
 
-  .heart-firework-gif {
-    top: 8%;
+  .final-celebration-small {
+    top: 2%;
+    right: 2%;
 
     width:
-      min(420px, 96vw);
+      min(110px, 25vw);
+  }
 
-    max-height: 45vh;
+  .final-heading {
+    font-size:
+      clamp(34px, 11vw, 55px);
   }
 
 }
