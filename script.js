@@ -30,11 +30,6 @@ const optionButtons =
     ".option-button[data-choice]"
   );
 
-const timeButtons =
-  document.querySelectorAll(
-    ".time-button"
-  );
-
 const selectedActivityText =
   document.getElementById(
     "selectedActivity"
@@ -43,6 +38,21 @@ const selectedActivityText =
 const finalChoiceText =
   document.getElementById(
     "finalChoice"
+  );
+
+const horseArea =
+  document.getElementById(
+    "horseArea"
+  );
+
+const horseButton =
+  document.getElementById(
+    "horseButton"
+  );
+
+const horseBubble =
+  document.getElementById(
+    "horseBubble"
   );
 
 const typingText =
@@ -62,7 +72,7 @@ const blackoutScreen =
 
 
 let selectedActivity = "";
-let selectedTime = "";
+let horseClicks = 0;
 let endingStarted = false;
 
 
@@ -82,9 +92,7 @@ const wait = (milliseconds) => {
 };
 
 
-/* ======================================
-   SKÆRMSKIFT
-====================================== */
+/* SKÆRMSKIFT */
 
 async function showScreen(screenId) {
 
@@ -124,9 +132,7 @@ async function showScreen(screenId) {
 }
 
 
-/* ======================================
-   STARTSIDE
-====================================== */
+/* STARTSIDE */
 
 async function startIntro() {
 
@@ -139,9 +145,7 @@ async function startIntro() {
 }
 
 
-/* ======================================
-   GAVE
-====================================== */
+/* GAVE */
 
 async function openGift() {
 
@@ -187,9 +191,7 @@ async function openGift() {
 }
 
 
-/* ======================================
-   NEJ-KNAP
-====================================== */
+/* NEJ-KNAP */
 
 function moveNoButton() {
 
@@ -231,9 +233,7 @@ function moveNoButton() {
 }
 
 
-/* ======================================
-   POPUP
-====================================== */
+/* POPUP */
 
 function showErrorPopup() {
 
@@ -255,9 +255,7 @@ function showErrorPopup() {
 }
 
 
-/* ======================================
-   JA
-====================================== */
+/* JA */
 
 async function acceptDate() {
 
@@ -315,9 +313,7 @@ async function acceptDate() {
 }
 
 
-/* ======================================
-   AKTIVITET
-====================================== */
+/* AKTIVITET */
 
 function selectActivity(event) {
 
@@ -327,6 +323,18 @@ function selectActivity(event) {
   selectedActivityText.textContent =
     `Du har valgt: ${selectedActivity} ❤️`;
 
+  horseClicks = 0;
+
+  horseButton.style.left =
+    "50%";
+
+  horseButton.style.top =
+    "50%";
+
+  horseBubble.classList.add(
+    "hidden"
+  );
+
   showScreen(
     "timeScreen"
   );
@@ -334,17 +342,148 @@ function selectActivity(event) {
 }
 
 
-/* ======================================
-   TIDSPUNKT
-====================================== */
+/* HEST */
 
-async function selectTime(event) {
+function moveHorse() {
 
-  selectedTime =
-    event.currentTarget.dataset.time;
+  const areaWidth =
+    horseArea.clientWidth;
+
+  const areaHeight =
+    horseArea.clientHeight;
+
+  const horseWidth =
+    horseButton.offsetWidth;
+
+  const horseHeight =
+    horseButton.offsetHeight;
+
+  const horizontalPadding =
+    horseWidth / 2 + 20;
+
+  const verticalPadding =
+    horseHeight / 2 + 35;
+
+  const minimumX =
+    horizontalPadding;
+
+  const maximumX =
+    areaWidth -
+    horizontalPadding;
+
+  const minimumY =
+    verticalPadding;
+
+  const maximumY =
+    areaHeight -
+    verticalPadding;
+
+  const newX =
+    minimumX +
+    Math.random() *
+    Math.max(
+      1,
+      maximumX - minimumX
+    );
+
+  const newY =
+    minimumY +
+    Math.random() *
+    Math.max(
+      1,
+      maximumY - minimumY
+    );
+
+  horseButton.style.left =
+    `${newX}px`;
+
+  horseButton.style.top =
+    `${newY}px`;
+
+  horseButton.classList.remove(
+    "running"
+  );
+
+  void horseButton.offsetWidth;
+
+  horseButton.classList.add(
+    "running"
+  );
+
+  return {
+    x: newX,
+    y: newY
+  };
+
+}
+
+
+function placeHorseBubble(
+  position,
+  message
+) {
+
+  horseBubble.textContent =
+    message;
+
+  horseBubble.style.left =
+    `${position.x}px`;
+
+  horseBubble.style.top =
+    `${position.y}px`;
+
+  horseBubble.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+async function handleHorseClick() {
+
+  horseClicks += 1;
+
+  horseButton.disabled = true;
+
+  const newPosition =
+    moveHorse();
+
+  await wait(350);
+
+  if (horseClicks === 1) {
+
+    placeHorseBubble(
+      newPosition,
+      "Prøv igen 😉"
+    );
+
+    await wait(450);
+
+    horseButton.disabled =
+      false;
+
+    return;
+
+  }
+
+  placeHorseBubble(
+    newPosition,
+    "Hehe prøv igen"
+  );
+
+  await wait(1350);
+
+  await showFinalScreen();
+
+}
+
+
+/* SLUTSIDE */
+
+async function showFinalScreen() {
 
   finalChoiceText.textContent =
-    `${selectedActivity} – ${selectedTime}`;
+    `${selectedActivity} – weekenden i uge 30 ❤️`;
 
   await showScreen(
     "finalScreen"
@@ -402,9 +541,7 @@ async function selectTime(event) {
 }
 
 
-/* ======================================
-   TYPING-FUNKTIONER
-====================================== */
+/* TYPING */
 
 async function typeMessage(
   message,
@@ -506,9 +643,7 @@ async function startTypingEnding() {
 }
 
 
-/* ======================================
-   EVENT LISTENERS
-====================================== */
+/* EVENTS */
 
 giftButton.addEventListener(
   "click",
@@ -563,15 +698,9 @@ optionButtons.forEach(
   }
 );
 
-timeButtons.forEach(
-  (button) => {
-
-    button.addEventListener(
-      "click",
-      selectTime
-    );
-
-  }
+horseButton.addEventListener(
+  "click",
+  handleHorseClick
 );
 
 window.addEventListener(
@@ -594,9 +723,7 @@ window.addEventListener(
 startIntro();
 
 
-/* ======================================
-   CANVAS-FYRVÆRKERI
-====================================== */
+/* CANVAS-FYRVÆRKERI */
 
 class FireworkEngine {
 
